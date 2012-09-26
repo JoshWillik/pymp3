@@ -1,0 +1,14 @@
+#!/usr/bin/env python
+import os
+import argparse
+
+par = argparse.ArgumentParser(description="A foo that bars", epilog='a bar that foos')
+par.add_argument('-c','--directory')
+par.add_argument('-o','--output-log')
+par.add_argument('--version', action='version', version='%(prog)s v0.0.1')
+par.add_argument('-r','--rip-')
+par.add_argument('-t','--pull-title')
+par.add_argument('-p','--print-metadata', action='store_true')
+opt= par.parse_args()
+print opt
+print os.path.abspath(opt.directory)
