@@ -15,6 +15,7 @@ class Ripper(object):
 			f_song_num=f_song_num[0]
 		song_data = {'title':f_title,'artist':f_artist,'cd_number':f_cd_num,'song_number':f_song_num}
 		print song_data
+		self.song_data = song_data
 
 
 if __name__ == "__main__":
@@ -24,4 +25,6 @@ if __name__ == "__main__":
 	base_args = argv
 	modified = base_args[1]
 	print modified
-	Ripper(modified)
+	dat = Ripper(modified)
+	print dat
+	print dat.song_data
