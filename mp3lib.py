@@ -4,7 +4,7 @@ import argparse
 class Mp3Lib(object):
 	def __init__(self):
 		try:
-			os.path.isfile(os.path.abspath("~/mp3morph.conf"))
+			os.path.isfile("~/mp3morph.conf")
 		except:
 			#CREATE mp3morph.conf
 		self.par = argparse.ArgumentParser(description="A foo that bars", epilog='a bar that foos')
