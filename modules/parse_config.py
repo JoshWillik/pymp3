@@ -1,0 +1,25 @@
+class Parser(object):
+	def __init__(self):
+		self.config = os.path.expanduser('~/.py_mp3.conf')
+		if not os.path.exists(self.config):
+			self.init_config()
+		else:
+			self.parse()
+
+	def init_config(self):
+		create_config = open(self.config, 'w')
+		create_config.write("cd_num.track_num - artist - track_name")
+		create_config.close()
+		self.parse()
+
+	def parse(self):
+		to_parse = open(self.config)
+		parsed = to_parse.readline().split()
+		for i in range(0, len(parsed)):
+			parsed[i] = parsed[i].split('.')
+		self.parsed = parsed
+		print self.parsed
+
+if __name__ == "__main__":
+	import os
+	start = Parser()
