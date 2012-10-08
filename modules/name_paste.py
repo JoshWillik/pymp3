@@ -36,5 +36,5 @@ if __name__ == "__main__":
 
 	#get song data to pass to file renamer
 	import file_rip
-	ripped = file_rip.Ripper('modules/test/foo.mp3').song_data
+	ripped = file_rip.Ripper(target).song_data
 	start_paste = Paster(ripped, parse_format, target)
