@@ -1,5 +1,6 @@
 class Parser(object):
 	def __init__(self):
+		import os
 		self.names  = ['discnumber','tracknumber','artist','title','album', '-'] #list of valid inputs
 		self.config = os.path.expanduser('~/.py_mp3.conf') #path to config file
 		if not os.path.exists(self.config):
@@ -37,10 +38,8 @@ class Parser(object):
 				if not i in self.names:
 					raise Exception('InvalidParseName')
 		self.parsed = parsed
-		print self.parsed
+		print "\nFormat pulled from ",self.config, "is\n",self.parsed
 
 if __name__ == "__main__":
 	#modules not designed to function independantly, for testing purposes only
-	#
-	import os
 	start = Parser()
