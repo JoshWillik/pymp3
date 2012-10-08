@@ -1,10 +1,20 @@
 class Paster(object):
 	def __init__(self, song_data, parse_array,target_file):
+		import os
 		self.song_data = song_data
-		self.parsed_config = parse_array
-		print song_data
-		print parse_array
-		print target_file
+		self.parse_array = parse_array
+		self.main()
+	def main(self):
+		new_name = ""
+		for i in range(0,len(self.parse_array)):
+			for y in self.parse_array[i]:
+				new_name += self.song_data[y]
+			new_name += " "
+		new_name=new_name.strip()
+		new_name+=".mp3"
+		print new_name
+		os.rename(target, os.path.dirname(os.path.abspath(target))+"/"+new_name)
+
 
 
 if __name__ == "__main__":

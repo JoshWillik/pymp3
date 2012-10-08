@@ -17,6 +17,8 @@ class Ripper(object):
 			f_cd_num=f_cd_num[0]
 		if f_song_num:
 			f_song_num=f_song_num[0]
+		if len(f_song_num) == 1:
+			f_song_num = '0'+f_song_num
 		song_data = {'title':f_title,'artist':f_artist,'discnumber':f_cd_num,'tracknumber':f_song_num, 'album':f_album, '-':'-'}
 		#print song_data #for debugging
 		self.song_data = song_data
