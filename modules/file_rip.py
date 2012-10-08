@@ -1,5 +1,7 @@
 class Ripper(object):
 	def __init__(self, m_file):
+		from libs.mut.mutagen.easyid3 import EasyID3 as mp3
+		self.m_file = m_file
 		if mp3(m_file):
 			self.editable = mp3(m_file)
 			self.main()
@@ -10,21 +12,22 @@ class Ripper(object):
 		f_cd_num   = self.editable['discnumber'][0].encode('utf-8')
 		f_song_num = self.editable['tracknumber'][0].encode('utf-8')
 		f_album    = self.editable['album'][0].encode('utf-8')
-		#print editable
+		# print editable #for debugging
 		if f_cd_num:
 			f_cd_num=f_cd_num[0]
 		if f_song_num:
 			f_song_num=f_song_num[0]
-		song_data = {'title':f_title,'artist':f_artist,'cdnumber':f_cd_num,'tracknumber':f_song_num, 'album':f_album}
-		print song_data
+		song_data = {'title':f_title,'artist':f_artist,'cdnumber':f_cd_num,'tracknumber':f_song_num, 'album':f_album, '-':'-'}
+		#print song_data #for debugging
 		self.song_data = song_data
+		print "\nData pulled from ", self.m_file, "is\n",song_data
 
 
 if __name__ == "__main__":
 	from sys import argv
-	from libs.mut.mutagen.easyid3 import EasyID3 as mp3
 	#import parse_config TODO
 	base_args = argv
+	#print base_args #for debugging
 	try: 
 		modified = base_args[1]
 	except:
@@ -35,5 +38,5 @@ if __name__ == "__main__":
 	except:
 		raise Exception("File does not exist, is not an mp3, or is corrupted.")
 	else:
-		print dat
+		#print dat #for debugging
 		print dat.song_data
