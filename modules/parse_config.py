@@ -26,7 +26,7 @@ class Parser(object):
 		 	if type(i) == list:
 		 		for y in i:
 		 			if not y in self.names:
-		 				raise Exception('InvalidParseName')
+		 				raise Exception('InvalidParseName', "Please check "+self.config+" for errors.")
 			else:
 				if not i in self.names:
 					raise Exception('InvalidParseName')
