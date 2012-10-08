@@ -17,7 +17,7 @@ class Ripper(object):
 			f_cd_num=f_cd_num[0]
 		if f_song_num:
 			f_song_num=f_song_num[0]
-		song_data = {'title':f_title,'artist':f_artist,'cdnumber':f_cd_num,'tracknumber':f_song_num, 'album':f_album, '-':'-'}
+		song_data = {'title':f_title,'artist':f_artist,'discnumber':f_cd_num,'tracknumber':f_song_num, 'album':f_album, '-':'-'}
 		#print song_data #for debugging
 		self.song_data = song_data
 		print "\nData pulled from ", self.m_file, "is\n",song_data
