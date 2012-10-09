@@ -1,6 +1,12 @@
 class Paster(object):
 	def __init__(self, song_data, parse_array,target_file):
 		import os
+		import re
+		self.re = re
+		self.os = os
+		self.song_data = song_data
+		self.parse_array = parse_array
+		self.target_file = target_file
 		self.song_data = song_data
 		self.parse_array = parse_array
 		self.main()
@@ -13,7 +19,9 @@ class Paster(object):
 		new_name=new_name.strip()
 		new_name+=".mp3"
 		print new_name
-		os.rename(target, os.path.dirname(os.path.abspath(target))+"/"+new_name)
+		new_name = self.re.compile('[^\w\"\' -\.]').sub("",new_name)
+		print new_name
+		self.os.rename(self.target_file, self.os.path.join(self.os.path.dirname(self.os.path.abspath(self.target_file)),new_name))
 
 
 
