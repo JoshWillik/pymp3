@@ -21,6 +21,13 @@ class Mp3Lib(object):
 		self.mp3_check = re.compile('\.mp3$') #regex object for checking if mp3 file
 		self.hidden_dir = re.compile('^\..+$') #object for detecting hidden directories`
 
+		if self.opt.default_config:
+			os.remove(os.path.expanduser("~/.py_mp3.conf"))
+			self.parse_config()
+			raise Exception("Default configuration restored")
+		else:
+			self.parse_config()
+
 		if not os.path.exists(self.opt.directory):
 			raise Exception("Invalid directory")
 		elif not os.access(self.opt.directory, os.W_OK): #check for write access to directory
@@ -30,11 +37,6 @@ class Mp3Lib(object):
 				os.mkdir(os.path.join(self.opt.directory, '.delete')) #store files cued for deletion
 			self.delete_dir = os.path.join(self.opt.directory, '.delete')
 
-		if self.opt.default_config:
-			os.remove(os.path.expanduser("~/.py_mp3.conf"))
-			self.parse_config()
-		else:
-			self.parse_config()
 		if (self.opt.pull_title and self.opt.rip_file) or (self.opt.pull_title and self.opt.print_metadata) or (self.opt.rip_file and self.opt.print_metadata):
 			print "Invalid combination of options"
 			print "Please select rip-file OR pull-title, not both"
