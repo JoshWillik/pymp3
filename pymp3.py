@@ -15,6 +15,7 @@ class Mp3Lib(object):
 		self.par.add_argument('-r','--rip-file', help='pull metadata from file and paste in name',action='store_true')
 		self.par.add_argument('-t','--pull-title', help="pull metadata from file name^^in development^^",action='store_true')
 		self.par.add_argument('-p','--print-metadata',help="prints metadata specified in config", action='store_true')
+		self.par.add_argument('-cl','--clear-metadata',help="clears all metadata from the file", action='store_true')
 		self.opt= self.par.parse_args()
 		# print self.opt #for debugging
 
@@ -37,10 +38,15 @@ class Mp3Lib(object):
 				os.mkdir(os.path.join(self.opt.directory, '.delete')) #store files cued for deletion
 			self.delete_dir = os.path.join(self.opt.directory, '.delete')
 
-		if (self.opt.pull_title and self.opt.rip_file) or (self.opt.pull_title and self.opt.print_metadata) or (self.opt.rip_file and self.opt.print_metadata):
+		if (self.opt.pull_title and self.opt.rip_file)\
+		 or (self.opt.pull_title and self.opt.print_metadata)\
+		  or (self.opt.rip_file and self.opt.print_metadata)\
+		  or (self.opt.clear_metadata and self.opt.print_metadata)\
+		  or (self.opt.clear_metadata and self.opt.pull_title)\
+		  or (self.opt.clear_metadata and self.opt.rip_file):
 			print "Invalid combination of options"
 			print "Please select rip-file OR pull-title, not both"
-		elif (self.opt.print_metadata or self.opt.pull_title or self.opt.rip_file) and self.opt.directory:
+		elif (self.opt.print_metadata or self.opt.pull_title or self.opt.rip_file or self.opt.clear_metadata) and self.opt.directory:
 			if self.opt.print_metadata:
 				self.pull_place = self.rip_file
 				self.paste_place= self.print_meta
@@ -50,6 +56,9 @@ class Mp3Lib(object):
 			elif self.opt.rip_file:
 				self.pull_place = self.rip_file
 				self.paste_place= self.paste_name
+			elif self.opt.clear_metadata:
+				self.pull_place = self.rip_file
+				self.paste_place= self.clear_metadata
 			self.folder_crawl(self.opt.directory)
 		elif not self.opt.directory:
 			print "please specifiy directory"
@@ -63,16 +72,24 @@ class Mp3Lib(object):
 					sub_dir.remove(i)
 			for specific in files:
 				filename = os.path.join(root,specific)
+				file_root, extension = os.path.splitext(specific)
 				if re.search(self.mp3_check,specific):
 					data = self.pull_place(filename)
 					self.paste_place(data, filename)
+				elif extension in self.allowed_files:
+					pass
 				else:
 					self.move_to_delete(filename)
 					print specific, " was moved to delete folder at: ", self.delete_dir
 
 	def print_meta(self,file_data, filename):
-		print "file data is: ", file_data
-		print "file path is: ", filename
+		root, spec_filename = os.path.split(filename)
+		del(file_data['-'])
+		print "For file, ", spec_filename, ":"
+		for i in file_data:
+			print i,":",file_data[i]
+		print "="*10
+
 	def move_to_delete(self, to_move, try_num=1):
 		print 'start directory', to_move
 		try:
@@ -87,8 +104,11 @@ class Mp3Lib(object):
 				move_to_delete(to_move,try_num+1)
 		try_num+=1
 	def rip_file(self, filename):
-		ripped_data = file_rip.Ripper(filename).song_data
+		self.rip_file = file_rip.Ripper(filename)
+		ripped_data = self.rip_file.song_data
 		return ripped_data
+	def clear_metadata(self,use,less):
+		self.rip_file.clear()
 	def paste_file(self,file_data,filename):
 		print "file data is: ", file_data
 		print "file path is: ", filename
@@ -98,5 +118,7 @@ class Mp3Lib(object):
 		print "file path is: ", filename
 	def parse_config(self):
 		self.parsed_array = parse_config.Parser().parsed
+		self.allowed_files= parse_config.Parser().allowed_files
+
 
 start = Mp3Lib()
