@@ -3,9 +3,13 @@ class Ripper(object):
 		from libs.mut.mutagen.easyid3 import EasyID3 as mp3
 		self.mp3 = mp3
 		self.m_file = m_file
-		if mp3(m_file):
-			self.editable = mp3(m_file)
-			self.main()
+		try:
+			if mp3(m_file):
+				self.editable = mp3(m_file)
+				self.main()
+		except:
+			print self.m_file, "is not an mp3, or has already been cleared"
+			self.song_data = {'-':'-','artist':'Unknown-Artist','title':"Unknown-Track","discnumber":"0","tracknumber":'00','album':"Unknown-Album"}
 	def main(self):
 		#editable   = mp3(self.mp3_file)
 		try:
@@ -41,9 +45,13 @@ class Ripper(object):
 		self.song_data = song_data
 		#print "\nData pulled from ", self.m_file, "is\n",song_data for debugging only
 	def clear(self):
-		for i in self.editable:
-			self.editable[i]=None
-		print self.mp3(self.m_file)
+		from libs.mut.mutagen.mp3 import MP3 as meta_delete
+		deleted_metadata= meta_delete(self.m_file)
+		try:
+			deleted_metadata.delete()
+			deleted_metadata.save()
+		except ValueError:
+			print "File has already been cleared, or an unknown error has occured"
 
 
 if __name__ == "__main__":
