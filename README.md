@@ -1,3 +1,4 @@
+NOTE: Code broke between Ubuntu 12.04 and 12.10. Not sure why yet.
 Summary: 
 non-destructive: moves non-mp3 files to a .delete directory (which is created in the directory the script runs in)
 to prevent script from deleting half your library on a bug. it seemed safer that way
