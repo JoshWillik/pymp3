@@ -34,7 +34,7 @@ import struct; from struct import unpack, pack
 from zlib import error as zlibError
 from warnings import warn
 
-import mutagen
+import ..mut as mutagen
 from mutagen._util import insert_bytes, delete_bytes, DictProxy
 
 class error(Exception): pass

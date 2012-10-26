@@ -3,7 +3,7 @@ import os
 import shutil
 import re
 import argparse
-from modules import name_paste, parse_config, file_rip
+from modules import name_paste, parse_config, file_rip, pull_name
 
 class Mp3Lib(object):
 	def __init__(self):
@@ -23,7 +23,8 @@ class Mp3Lib(object):
 		self.hidden_dir = re.compile('^\..+$') #object for detecting hidden directories`
 
 		if self.opt.default_config:
-			os.remove(os.path.expanduser("~/.py_mp3.conf"))
+			if os.path.exists(os.path.expanduser("~/.py_mp3.conf")):
+				os.remove(os.path.expanduser("~/.py_mp3.conf"))
 			self.parse_config()
 			raise Exception("Default configuration restored")
 		else:
@@ -63,7 +64,7 @@ class Mp3Lib(object):
 		elif not self.opt.directory:
 			print "please specifiy directory"
 		else:
-			print "Unknown error"
+			print "Unknown error, did you specify an operation?"
 
 	def folder_crawl(self, directory):
 		for root, sub_dir, files in os.walk(directory):
@@ -117,8 +118,9 @@ class Mp3Lib(object):
 	def pull_name(self,filename):
 		print "file path is: ", filename
 	def parse_config(self):
-		self.parsed_array = parse_config.Parser().parsed
-		self.allowed_files= parse_config.Parser().allowed_files
+		temp_obj = parse_config.Parser()
+		self.parsed_array = temp_obj.parsed
+		self.allowed_files= temp_obj.allowed_files
 
 
 start = Mp3Lib()

@@ -17,10 +17,10 @@ class Parser(object):
 		create_config.write("#line 1 options: discnumber, tracknumber, artist, title, album\n")
 		create_config.write('#use spaces to separate items, periods to signify non-space seperators\n')
 		create_config.write('#dashes, "-", show up as dashes.\n')
-		create_config.write('#line 2 options: any file extension.')
-		create_config.write('#remember to include spaces and put a . before each')
-		create_config.write('#ex: .m4a .flac .jpg .png')
-		create_config.write('#this will make the script scip m4a, flac, jpg, and png files')
+		create_config.write('#line 2 options: any file extension.\n')
+		create_config.write('#remember to include spaces and put a . before each\n')
+		create_config.write('#ex: .m4a .flac .jpg .png\n')
+		create_config.write('#this will make the script skip m4a, flac, jpg, and png files\n')
 		create_config.close()
 
 		#generation message 
