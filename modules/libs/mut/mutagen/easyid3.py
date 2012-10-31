@@ -15,7 +15,7 @@ more like Vorbis or APEv2 tags.
 
 from fnmatch import fnmatchcase
 
-from . import id3
+import mutagen.id3
 
 from mutagen import Metadata
 from mutagen._util import DictMixin, dict_match

@@ -25,8 +25,8 @@ version = (1, 20)
 version_string = ".".join(map(str, version))
 
 import warnings
-print "!"*5, __name__
-import .mutagen._util
+
+import mutagen._util
 
 class Metadata(object):
     """An abstract dict-like object.
@@ -47,7 +47,7 @@ class Metadata(object):
     def delete(self, filename=None):
         raise NotImplementedError
 
-class FileType(_util.DictMixin):
+class FileType(mutagen._util.DictMixin):
     """An abstract object wrapping tags and audio stream information.
 
     Attributes:

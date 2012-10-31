@@ -1,6 +1,6 @@
 class Ripper(object):
 	def __init__(self, m_file):
-		from libs.mut.mutagen.easyid3 import EasyID3 as mp3
+		from mutagen.easyid3 import EasyID3 as mp3
 		self.mp3 = mp3
 		self.m_file = m_file
 		try:
@@ -45,7 +45,7 @@ class Ripper(object):
 		self.song_data = song_data
 		#print "\nData pulled from ", self.m_file, "is\n",song_data for debugging only
 	def clear(self):
-		from libs.mut.mutagen.mp3 import MP3 as meta_delete
+		from mutagen.mp3 import MP3 as meta_delete
 		deleted_metadata= meta_delete(self.m_file)
 		try:
 			deleted_metadata.delete()
