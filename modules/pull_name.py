@@ -88,4 +88,5 @@ class Puller(object):
 		return answer
 
 if __name__ == "__main__":
+	#modules not designed to function independantly, for testing purposes only
 	start = Puller("000 - Unknown-Artist - Unknown-Track.mp3")

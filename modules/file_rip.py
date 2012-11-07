@@ -3,11 +3,10 @@ class Ripper(object):
 		import mutagen.easyid3 as foobar
 		self.mp3 = foobar.EasyID3
 		self.m_file = m_file
-		#try:
-		if self.mp3(m_file):
+		try:
 			self.editable = self.mp3(m_file)
 			self.main()
-		#except:
+		except:
 			print self.m_file, "is not an mp3, or has already been cleared"
 			self.song_data = {'-':'-','artist':'Unknown-Artist','title':"Unknown-Track","discnumber":"0","tracknumber":'00','album':"Unknown-Album"}
 	def main(self):
@@ -32,7 +31,7 @@ class Ripper(object):
 			f_album    = self.editable['album'][0].encode('utf-8')
 		except:
 			f_album = "Unknown-Album"
-		# print editable #for debugging-6
+		# print self.editable #for debugging-6
 		if f_cd_num:
 			f_cd_num=f_cd_num[0]
 		if f_song_num:

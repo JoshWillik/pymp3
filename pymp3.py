@@ -3,7 +3,7 @@ import os
 import shutil
 import re
 import argparse
-from modules import name_paste, parse_config, file_rip, pull_name, paste_file
+from modules import name_paste, parse_config, file_rip, pull_name, paste_file, clear_file
 
 class Mp3Lib(object):
 	def __init__(self):
@@ -60,8 +60,8 @@ class Mp3Lib(object):
 				self.pull_place = self.rip_file
 				self.paste_place= self.paste_name
 			elif self.opt.clear_metadata:
-				self.pull_place = self.rip_file
-				self.paste_place= self.clear_metadata
+				self.pull_place = self.clear_metadata
+				self.paste_place= self.null_function
 			self.folder_crawl(self.opt.directory)
 		elif not self.opt.directory:
 			print "please specifiy directory"
@@ -107,14 +107,13 @@ class Mp3Lib(object):
 				move_to_delete(to_move,try_num+1)
 		try_num+=1
 	def rip_file(self, filename):
-		self.rip_file = file_rip.Ripper(filename)
-		ripped_data = self.rip_file.song_data
+		ripped_file = file_rip.Ripper(filename)
+		ripped_data = ripped_file.song_data
 		return ripped_data
-	def clear_metadata(self,use,less):
-		self.rip_file.clear()
+	def clear_metadata(self,filename):
+		cleared_file = clear_file.Clearer(filename)
 	def paste_file(self,file_data,filename):
-		print "file data is: ", file_data
-		print "file path is: ", filename
+		pasted_file = paste_file.Paster(file_data, filename)
 	def paste_name(self,file_data,filename):
 		name_paste.Paster(file_data,self.parsed_array,filename)
 	def pull_name(self,filename):
@@ -127,6 +126,9 @@ class Mp3Lib(object):
 		temp_obj = parse_config.Parser()
 		self.parsed_array = temp_obj.parsed
 		self.allowed_files= temp_obj.allowed_files
+
+	def null_function(self, null = None, renull = None, more_null = None):
+		pass
 
 
 start = Mp3Lib()

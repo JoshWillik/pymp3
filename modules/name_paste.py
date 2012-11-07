@@ -14,7 +14,10 @@ class Paster(object):
 		new_name = ""
 		for i in range(0,len(self.parse_array)):
 			for y in self.parse_array[i]:
-				new_name += self.song_data[y]
+				if y != "-":
+					new_name += self.song_data[y]
+				else:
+					new_name += "-"
 			new_name += " "
 		new_name=new_name.strip()
 		new_name+=".mp3"
@@ -26,7 +29,7 @@ class Paster(object):
 
 
 if __name__ == "__main__":
-	#NOTE: "__main__" for debugging purposes only, not meant to be used individually
+	#modules not designed to function independantly, for testing purposes only
 	import os
 	
 	#get parsed configuration data to pass to name paster

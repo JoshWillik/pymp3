@@ -14,5 +14,6 @@ class Paster(object):
 		to_paste.save()
 
 if __name__ == "__main__":
+	#modules not designed to function independantly, for testing purposes only
 	file_dat = {'tracknumber': '02', 'discnumber': '1', 'title': 'Love Has Found Us', 'artist': 'Bellarive'}
 	start = Paster(file_dat, "~/lar.mp3")
