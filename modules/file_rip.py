@@ -1,13 +1,13 @@
 class Ripper(object):
 	def __init__(self, m_file):
-		from mutagen.easyid3 import EasyID3 as mp3
-		self.mp3 = mp3
+		import mutagen.easyid3 as foobar
+		self.mp3 = foobar.EasyID3
 		self.m_file = m_file
-		try:
-			if mp3(m_file):
-				self.editable = mp3(m_file)
-				self.main()
-		except:
+		#try:
+		if self.mp3(m_file):
+			self.editable = self.mp3(m_file)
+			self.main()
+		#except:
 			print self.m_file, "is not an mp3, or has already been cleared"
 			self.song_data = {'-':'-','artist':'Unknown-Artist','title':"Unknown-Track","discnumber":"0","tracknumber":'00','album':"Unknown-Album"}
 	def main(self):
@@ -41,15 +41,14 @@ class Ripper(object):
 			f_song_num = '0'+f_song_num
 
 		song_data = {'title':f_title,'artist':f_artist,'discnumber':f_cd_num,'tracknumber':f_song_num, 'album':f_album, '-':'-'}
-		#print song_data #for debugging
+		print song_data #for debugging
 		self.song_data = song_data
 		#print "\nData pulled from ", self.m_file, "is\n",song_data for debugging only
 	def clear(self):
-		from mutagen.mp3 import MP3 as meta_delete
-		deleted_metadata= meta_delete(self.m_file)
+		delete_metadata= self.mp3(self.m_file)
 		try:
-			deleted_metadata.delete()
-			deleted_metadata.save()
+			delete_metadata.clear()
+			delete_metadata.save()
 		except ValueError:
 			print "File has already been cleared, or an unknown error has occured"
 

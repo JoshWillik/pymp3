@@ -3,7 +3,7 @@ import os
 import shutil
 import re
 import argparse
-from modules import name_paste, parse_config, file_rip, pull_name
+from modules import name_paste, parse_config, file_rip, pull_name, paste_file
 
 class Mp3Lib(object):
 	def __init__(self):
@@ -19,6 +19,8 @@ class Mp3Lib(object):
 		self.opt= self.par.parse_args()
 		# print self.opt #for debugging
 
+		self.silented_pull = False
+		self.pass_format_back = []
 		self.mp3_check = re.compile('\.mp3$') #regex object for checking if mp3 file
 		self.hidden_dir = re.compile('^\..+$') #object for detecting hidden directories`
 
@@ -116,7 +118,11 @@ class Mp3Lib(object):
 	def paste_name(self,file_data,filename):
 		name_paste.Paster(file_data,self.parsed_array,filename)
 	def pull_name(self,filename):
-		print "file path is: ", filename
+		pulled_data = pull_name.Puller(filename, self.silented_pull,self.pass_format_back)
+		ripped_data = pulled_data.name_data
+		self.silented_pull = pulled_data.pickup_answer
+		self.pass_format_back = pulled_data.end_format
+		return ripped_data
 	def parse_config(self):
 		temp_obj = parse_config.Parser()
 		self.parsed_array = temp_obj.parsed

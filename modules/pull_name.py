@@ -1,7 +1,9 @@
 class Puller(object):
-	def __init__(self, p_file):
+	def __init__(self, p_file, silent = False, format = []):
 		import os
 		self.os = os
+		self.silent = silent
+		self.format = format
 
 		self.more_data_check = False
 
@@ -15,10 +17,12 @@ class Puller(object):
 			self.get_format()
 		self.name_data = {}
 		self.main(filename) #for debugging
+		self.pickup_answer = True
+		self.end_format = self.format
 	
 	def main(self, filename):
 		chop_format = self.format[:]
-		filename = filename.split()
+		filename = filename.split(' - ')
 		while '-' in filename[:]:
 			filename.remove("-")
 		#print filename #for debugging
@@ -58,24 +62,25 @@ class Puller(object):
 						raise Exception("User cancelled excecution")
 					elif answer[0].lower() == 'y':
 						self.more_data_check = True
-		print self.name_data #for debugging
+		#print self.name_data #for debugging
 
 	
 	def get_format(self):
-		self.valid  = ['discnumber','tracknumber','artist','title','album']
-		self.format = raw_input("Input parse format in pattern: 'item/album/artist/item'\nValid names are: 'discnumber','tracknumber','artist','title','album'\nSeperate items with a /\n!>> ")
-		#print self.format #for debugging purposes
-		self.format = self.format.split("/")
-		print "Input format is: ", self.format 
-		for item in self.format[:]:
-			if not item in self.valid:
-				self.format.remove(item)
-		print "Parsed format is: ", self.format
-		answer = "x"
-		while not (answer[0].lower() == 'y' or answer[0].lower() == 'n'):
-			answer = self.get_input()
-			if answer[0].lower() == 'n':
-				raise Exception("User cancelled excecution")
+		if not self.silent:
+			self.valid  = ['discnumber','tracknumber','artist','title','album']
+			self.format = raw_input("Input parse format in pattern: 'item/album/artist/item'\nValid names are: 'discnumber','tracknumber','artist','title','album'\nSeperate items with a /\n!>> ")
+			#print self.format #for debugging purposes
+			self.format = self.format.split("/")
+			print "Input format is: ", self.format 
+			for item in self.format[:]:
+				if not item in self.valid:
+					self.format.remove(item)
+			print "Parsed format is: ", self.format
+			answer = "x"
+			while not (answer[0].lower() == 'y' or answer[0].lower() == 'n'):
+				answer = self.get_input()
+				if answer[0].lower() == 'n':
+					raise Exception("User cancelled excecution")
 	def get_input(self):
 		answer = None
 		while not answer:
