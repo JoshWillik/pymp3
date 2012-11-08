@@ -19,8 +19,9 @@ class Mp3Lib(object):
 		self.opt= self.par.parse_args()
 		# print self.opt #for debugging
 
-		self.silented_pull = False
-		self.pass_format_back = []
+		self.silented_pull = False #init var for use in pull_title
+		self.pass_format_back = [] #init var for use in pull_title
+
 		self.mp3_check = re.compile('\.mp3$') #regex object for checking if mp3 file
 		self.hidden_dir = re.compile('^\..+$') #object for detecting hidden directories`
 		self.file_repeat= re.compile('\(\d+\)\.') #object for dealing with duplicate filenames
@@ -51,6 +52,8 @@ class Mp3Lib(object):
 			print "Invalid combination of options"
 			print "Please select rip-file OR pull-title, not both"
 		elif (self.opt.print_metadata or self.opt.pull_title or self.opt.rip_file or self.opt.clear_metadata) and self.opt.directory:
+			
+			#set the different areas to get the data from, and give the data to
 			if self.opt.print_metadata:
 				self.pull_place = self.rip_file
 				self.paste_place= self.print_meta
@@ -72,67 +75,67 @@ class Mp3Lib(object):
 	def folder_crawl(self, directory):
 		for root, sub_dir, files in os.walk(directory):
 			for sub_sub_dir in sub_dir[:]:
-				for i in re.findall(self.hidden_dir,sub_sub_dir):
-					sub_dir.remove(i)
+				for i in re.findall(self.hidden_dir,sub_sub_dir): #remove hidden directories from folder_crawl
+					sub_dir.remove(i) #this is to protect the .delete directory and custom hidden folders
 			for specific in files:
-				filename = os.path.join(root,specific)
-				file_root, extension = os.path.splitext(specific)
-				if re.search(self.mp3_check,specific):
-					data = self.pull_place(filename)
-					self.paste_place(data, filename)
-				elif extension in self.allowed_files:
+				filename = os.path.join(root,specific) #create specific file name to give to modules
+				file_root, extension = os.path.splitext(specific) #for checking filetype
+				if re.search(self.mp3_check,specific): #check if mp3
+					data = self.pull_place(filename) #pull from here
+					self.paste_place(data, filename) #give to here
+				elif extension in self.allowed_files: #if the file format is allowed, great, leave it
 					pass
 				else:
-					self.move_to_delete(filename)
+					self.move_to_delete(filename) #otherwise move to .delete
 					print specific, " was moved to delete folder at: ", self.delete_dir
 
 	def print_meta(self,file_data, filename):
 		root, spec_filename = os.path.split(filename)
-		del(file_data['-'])
-		print "For file, ", spec_filename, ":"
+		del(file_data['-']) #remove the - from the file data. No-one wants to see that printed
+		print "For file, ", spec_filename, ":" #print what the file is
 		for i in file_data:
-			print i,":",file_data[i]
-		print "="*20
+			print i,":",file_data[i] #print the data
+		print "="*20 #seperator
 
 	def move_to_delete(self, to_move,try_num=1):
-		old_name = to_move
+		old_name = to_move #used to rename the file
 		try:
-			shutil.move(to_move, self.delete_dir)
+			shutil.move(to_move, self.delete_dir) #move the file
 			print "The file was moved, "
-		except:
-			root_of_file, extension = os.path.splitext(to_move)
-			if try_num == 1:
-				to_move = root_of_file + "("+str(try_num)+")" + extension
+		except: #if a file of that name already exists
+			root_of_file, extension = os.path.splitext(to_move) #add a (0) number identifier
+			if try_num == 1: #if this is the first time the error happens
+				to_move = root_of_file + "("+str(try_num)+")" + extension #just add an identifier
 			else:
-				begin, re_extension = re.split(self.file_repeat, to_move)
+				begin, re_extension = re.split(self.file_repeat, to_move) #otherwise insert a custom identifier
 				to_move = begin + "("+str(try_num)+")."+re_extension
-			print to_move
-			os.rename(old_name, to_move)
-			self.move_to_delete(to_move,try_num+1)
-		try_num+=1
+			#print to_move #for debugging
+			os.rename(old_name, to_move) #rename file to valid name
+			self.move_to_delete(to_move,try_num+1) #attempt to move the file again, with a higher try number for renaming
+		try_num+=1 #probably exists for previous attempt at this functionality. Most likely redundant
 	def rip_file(self, filename):
-		ripped_file = file_rip.Ripper(filename)
-		ripped_data = ripped_file.song_data
-		return ripped_data
+		ripped_file = file_rip.Ripper(filename) #set file for ripping
+		ripped_data = ripped_file.song_data #take data 
+		return ripped_data #return it
 	def clear_metadata(self,filename):
-		cleared_file = clear_file.Clearer(filename)
+		cleared_file = clear_file.Clearer(filename) #give filename to clearing module
 	def paste_file(self,file_data,filename):
-		pasted_file = paste_file.Paster(file_data, filename)
+		pasted_file = paste_file.Paster(file_data, filename) #give filename and file data for pasting into the file
 	def paste_name(self,file_data,filename):
-		name_paste.Paster(file_data,self.parsed_array,filename)
+		name_paste.Paster(file_data,self.parsed_array,filename) #give filename and file data for pasting into name
 	def pull_name(self,filename):
-		pulled_data = pull_name.Puller(filename, self.silented_pull,self.pass_format_back)
-		ripped_data = pulled_data.name_data
-		self.silented_pull = pulled_data.pickup_answer
-		self.pass_format_back = pulled_data.end_format
-		return ripped_data
+		pulled_data = pull_name.Puller(filename, self.silented_pull,self.pass_format_back) #run the first time
+		ripped_data = pulled_data.name_data #get data
+		self.silented_pull = pulled_data.pickup_answer #check for successful execution and silence next run
+		self.pass_format_back = pulled_data.end_format #check for format and silence future question asking
+		return ripped_data #return data
 	def parse_config(self):
-		temp_obj = parse_config.Parser()
-		self.parsed_array = temp_obj.parsed
-		self.allowed_files= temp_obj.allowed_files
+		temp_obj = parse_config.Parser() #run the object
+		self.parsed_array = temp_obj.parsed #take config array
+		self.allowed_files= temp_obj.allowed_files #take extra allowed files
 
-	def null_function(self, null = None, renull = None, more_null = None):
+	def null_function(self, null = None, renull = None, more_null = None): #used to make the clear file function fit
 		pass
 
 
-start = Mp3Lib()
+start = Mp3Lib() #start the program off

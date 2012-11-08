@@ -9,12 +9,12 @@ class Paster(object):
 		self.main(file_data,filename)
 	def main(self,data,filename):
 		try:
-			to_paste = self.used(self.os.path.expanduser(filename))
-			for pair in data:
-				to_paste[pair] = data[pair]
-			to_paste.save()
+			to_paste = self.used(self.os.path.expanduser(filename)) #open the file for editing through mutagen
+			for pair in data: 
+				to_paste[pair] = data[pair] #file['artist'] = file_data['artist'] for example
+			to_paste.save() #save changes to file
 		except:
-			print filename, " is not an mp3, is corrupted, or is otherwise unusable"
+			print filename, " is not an mp3, is corrupted, or is otherwise unusable" #in case the operations fail
 			
 if __name__ == "__main__":
 	#modules not designed to function independantly, for testing purposes only

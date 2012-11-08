@@ -24,29 +24,32 @@ class Parser(object):
 		create_config.close()
 
 		#generation message 
-		print "####################################\nConfig file generated at: ",self.config+"\n####################################"
+		print "#"*36+"\nConfig file generated at: ",self.config+"\n#"*36
 		self.parse()
 
 	def parse(self):
 		to_parse = open(self.config)
-		parsed = to_parse.readline().split() #read output format
+		parsed = to_parse.readline().split() #read output format into a list
 		if parsed == []:
 			raise Exception("Parse line empty")
 		for i in range(0, len(parsed)):
-			parsed[i] = parsed[i].split('.')
+			parsed[i] = parsed[i].split('.') #split non space seperated items into sublist
+
+		#block to check for invalid names
 		for i in parsed:
-		 	if type(i) == list:
+		 	if type(i) == list: #in case non space seperators are used
 		 		for y in i:
 		 			if not y in self.names:
 		 				raise Exception('InvalidParseName', "Please check "+self.config+" for errors. Delete it if you would like to automatically repair it.")
 			else:
 				if not i in self.names:
-					raise Exception('InvalidParseName')
-		self.parsed = parsed
+					raise Exception('InvalidParseName',"Please check "+self.config+" for errors. Delete it if you would like to automatically repair it.")
+		self.parsed = parsed #module wide accessability
 		print "\nFormat pulled from ",self.config, "is\n",self.parsed
-		allowed = to_parse.readline().split()
-		self.allowed_files = allowed
-		if allowed == []:
+
+		allowed = to_parse.readline().split() #read list of extra file formats to allow
+		self.allowed_files = allowed #make module wide
+		if allowed == []: 
 			print "No extra file formats allowed"
 		else:
 			print "Extra formats: ", allowed

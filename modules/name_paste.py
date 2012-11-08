@@ -2,6 +2,8 @@ class Paster(object):
 	def __init__(self, song_data, parse_array,target_file):
 		import os
 		import re
+
+		#make variables module wide
 		self.re = re
 		self.os = os
 		self.song_data = song_data
@@ -10,20 +12,21 @@ class Paster(object):
 		self.song_data = song_data
 		self.parse_array = parse_array
 		self.main()
+
 	def main(self):
 		new_name = ""
-		for i in range(0,len(self.parse_array)):
-			for y in self.parse_array[i]:
+		for i in range(0,len(self.parse_array)): #for every item in the outer array
+			for y in self.parse_array[i]: #in case the item is an array, which should be joined without spaces
 				if y != "-":
 					new_name += self.song_data[y]
 				else:
 					new_name += "-"
 			new_name += " "
+
 		new_name=new_name.strip()
 		new_name+=".mp3"
-		#print new_name for debugging
-		new_name = self.re.compile('[^\w\"\' -\.]').sub("",new_name)
-		#print new_name for debugging
+		new_name = self.re.compile('[^\w\"\' -\.]').sub("",new_name) #clear special characters from the name
+		#rename file to new name
 		self.os.rename(self.target_file, self.os.path.join(self.os.path.dirname(self.os.path.abspath(self.target_file)),new_name))
 
 

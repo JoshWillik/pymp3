@@ -35,7 +35,9 @@ ex: ./pymp3 -c ~/Music -t or ./pymp3 -c ~/Music --pull-title
 Extra notes: 
 Running any operation except -d will move incompatable files to .delete
 Invalid files marked .mp3 *should* be passed over with a printed warning.
+All hidden files or folders will be ignored, so place important extra data in them
 
 Limitations:
 Will not work for folders that have more than 991 duplicate files
 Will not work for discnumbers greater than 9
+Pulling data from the filename will not work with extra -'s in the title

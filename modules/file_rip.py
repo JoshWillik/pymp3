@@ -1,37 +1,44 @@
 class Ripper(object):
 	def __init__(self, m_file):
 		import mutagen.easyid3 as foobar
-		self.mp3 = foobar.EasyID3
-		self.m_file = m_file
+		import mutagen.id3 as error_mut #to catch ID3BadUnsynchData error. Unknown reason for error
+		import re #used in strip_dashes
+		self.re = re
+		self.mp3 = foobar.EasyID3 #short name for required module
+		self.m_file = m_file #make module wide accessable
+
 		try:
 			self.editable = self.mp3(m_file)
 			self.main()
+		except error_mut.ID3BadUnsynchData:
+			print m_file, "could not be opened, mutagen library had unknown internal error" 
 		except:
-			print self.m_file, "is not an mp3, or has already been cleared"
-			self.song_data = {'-':'-','artist':'Unknown-Artist','title':"Unknown-Track","discnumber":"0","tracknumber":'00','album':"Unknown-Album"}
+			print self.m_file, "is not an mp3, or an unknown error has occured"
+		finally:
+			self.song_data = {'-':'-','artist':'Unknown Artist','title':"Unknown Track","discnumber":"0","tracknumber":'00','album':"Unknown Album"}
+	
 	def main(self):
-		#editable   = mp3(self.mp3_file)
 		try:
-			f_artist = self.editable['artist'][0].encode('utf-8')
+			f_artist   = self.strip_dashes("artist")
 		except KeyError:
-			f_artist = "Unknown-Artist"
+			f_artist   = "Unknown Artist"
 		try:
-			f_title    = self.editable['title'][0].encode('utf-8')
+			f_title    = self.strip_dashes("title")
 		except KeyError:
-			f_title = "Unknown-Track"
-		try:
-			f_cd_num = self.editable['discnumber'][0].encode('utf-8')
+			f_title    = "Unknown Track"
+		try: 
+			f_cd_num   = self.strip_dashes("discnumber")
 		except KeyError:
-			f_cd_num = "0"
+			f_cd_num   = "0"
 		try:
-			f_song_num = self.editable['tracknumber'][0].encode('utf-8')
+			f_song_num = self.strip_dashes("tracknumber")
 		except KeyError:
 			f_song_num = "00"
 		try:
-			f_album    = self.editable['album'][0].encode('utf-8')
+			f_album    = self.strip_dashes("album")
 		except:
-			f_album = "Unknown-Album"
-		# print self.editable #for debugging-6
+			f_album    = "Unknown Album"
+
 		if f_cd_num:
 			f_cd_num=f_cd_num[0]
 		if f_song_num:
@@ -40,17 +47,19 @@ class Ripper(object):
 			f_song_num = '0'+f_song_num
 
 		song_data = {'title':f_title,'artist':f_artist,'discnumber':f_cd_num,'tracknumber':f_song_num, 'album':f_album, '-':'-'}
-		# print song_data #for debugging
 		self.song_data = song_data
-		#print "\nData pulled from ", self.m_file, "is\n",song_data for debugging only
+
+	def strip_dashes(self, item): #dashes interfere with parsing the title data into metadata later
+		to_strip = self.editable[item][0].encode('utf-8')
+		item_list = self.re.split("-", to_strip)
+		paste_back = "".join(item_list)
+		return paste_back
 
 
 if __name__ == "__main__":
-	#For debugging, not intended for solitary use
+	#for debugging, not intended for solitary use
 	from sys import argv
-	#import parse_config TODO
 	base_args = argv
-	#print base_args #for debugging
 	try: 
 		modified = base_args[1]
 	except:

@@ -13,5 +13,6 @@ class Clearer(object):
 			print "File has already been cleared, or an unknown error has occured"
 
 if __name__ == "__main__":
+	#for debugging, do not use as individual module
 	import os
 	Clearer(os.path.expanduser("~/lar.mp3"))
