@@ -8,12 +8,9 @@ supports taking metadata and putting it into the file name according to a format
 if xfile.xtension already exists in trash, rename target file to xfile(1).xtension. If that doesn't work, try xfile.(2).xtension and so on and so forth
 
 Development: 
-Next in the development cue are:
-pulling data from file name, and inputting into file metadata (tricky, 1-3 days)
+Next in the possible development cue are:
 installability (extra option, will require investigation and experimentation, please contact for more details)
 
-
-Working commands:
 -c <or> --directory
 specifies working directory (required most of the time)
 ex: ./pymp3 -c ~/Music <or> ./py_mp3 --directory ~/Music
@@ -24,16 +21,15 @@ ex: ./pymp3 -c ~/Music -r <or> ./py_mp3 -c ~/Music --rip-file
 
 -d <or> --default-config
 resets the config file at ~/.py_mp3.conf to the default format
-ex: ./pymp3 -d
+ex: ./pymp3 -d <or> ./pymp3 --default-config
 note: will halt the rest of the program execution
 
 -p <or> --print-metadata:
 Prints metadata formatted according to ~/.py_mp3.conf format
-ex: .pymp3
+ex: ./pymp3 -c ~/Music -p <or> ./pymp3 -c ~/Music --print-metadata
 
-
-NON-WORKING commands (not yet implimented, will error or give unexpected results);
 -t <or> --pull-title
 pulls data from file title and pastes metadata
+ex: ./pymp3 -c ~/Music -t or ./pymp3 -c ~/Music --pull-title
 
 Extra notes: Running any operation except -d will move incompatable files to .delete
