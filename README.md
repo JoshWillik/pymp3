@@ -1,11 +1,13 @@
 NOTE: Requires installed mutagen library (included, see /modules/libs for details)
 
 Summary: 
-non-destructive: moves non-mp3 files to a .delete directory (which is created in the directory the script runs in)
-to prevent script from deleting half your library on a bug. it seemed safer that way
-Ignores all hidden folders (like .info, .readme.txt, .etcetc, if you want to store data inside the directory without it getting removed)
-supports taking metadata and putting it into the file name according to a format specified in ~/.py_mp3.conf
-if xfile.xtension already exists in trash, rename target file to xfile(1).xtension. If that doesn't work, try xfile.(2).xtension and so on and so forth
+non-destructive: moves non-mp3 files to a .delete directory (which is created in the directory the script runs in) to prevent script from deleting half your library on a bug. it seemed safer that way.
+
+Ignores all hidden folders (like .info, .readme.txt, .etcetc, if you want to store data inside the directory without it getting removed).
+
+Supports taking metadata and putting it into the file name according to a format specified in ~/.py_mp3.conf.
+
+If xfile.xtension already exists in trash, rename target file to xfile(1).xtension. If that doesn't work, try xfile.(2).xtension and so on and so forth
 
 Development: 
 Next in the possible development cue are:
