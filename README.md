@@ -32,4 +32,6 @@ ex: ./pymp3 -c ~/Music -p <or> ./pymp3 -c ~/Music --print-metadata
 pulls data from file title and pastes metadata
 ex: ./pymp3 -c ~/Music -t or ./pymp3 -c ~/Music --pull-title
 
-Extra notes: Running any operation except -d will move incompatable files to .delete
+Extra notes: 
+Running any operation except -d will move incompatable files to .delete
+Invalid files marked .mp3 *should* be passed over with a printed warning.

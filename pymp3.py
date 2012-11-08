@@ -23,7 +23,7 @@ class Mp3Lib(object):
 		self.pass_format_back = []
 		self.mp3_check = re.compile('\.mp3$') #regex object for checking if mp3 file
 		self.hidden_dir = re.compile('^\..+$') #object for detecting hidden directories`
-		self.file_repeat= re.compile('\(.+\)\.')
+		self.file_repeat= re.compile('\(\d+\)\.')
 
 		if self.opt.default_config:
 			if os.path.exists(os.path.expanduser("~/.py_mp3.conf")):
@@ -105,7 +105,7 @@ class Mp3Lib(object):
 				to_move = root_of_file + "("+str(try_num)+")" + extension
 			else:
 				begin, re_extension = re.split(self.file_repeat, to_move)
-				to_move = begin + "("+str(try_num)+")"+re_extension
+				to_move = begin + "("+str(try_num)+")."+re_extension
 			print to_move
 			os.rename(old_name, to_move)
 			self.move_to_delete(to_move,try_num+1)
