@@ -9,11 +9,11 @@ class Mp3Lib(object):
 	def __init__(self):
 		epilogue_text= "Please email the developer at joshwillik@gmail.com for further inquires"
 		self.par = argparse.ArgumentParser(description="edit options in config file at ~/.py_mp3.conf", epilog=epilogue_text)
-		self.par.add_argument('--version', action='version', version='%(prog)s v0.0.1')
-		self.par.add_argument('-d','--default-config', help="Reset config file to default", action='store_true') #implimented
+		self.par.add_argument('--version', action='version', version='%(prog)s v1.0.1')
+		self.par.add_argument('-d','--default-config', help="reset config file to default", action='store_true') #implimented
 		self.par.add_argument('-c', '--directory', help='specify working directory')
 		self.par.add_argument('-r','--rip-file', help='pull metadata from file and paste in name',action='store_true')
-		self.par.add_argument('-t','--pull-title', help="pull metadata from file name^^in development^^",action='store_true')
+		self.par.add_argument('-t','--pull-title', help="pull metadata from file name",action='store_true')
 		self.par.add_argument('-p','--print-metadata',help="prints metadata specified in config", action='store_true')
 		self.par.add_argument('-cl','--clear-metadata',help="clears all metadata from the file", action='store_true')
 		self.opt= self.par.parse_args()
@@ -23,7 +23,7 @@ class Mp3Lib(object):
 		self.pass_format_back = []
 		self.mp3_check = re.compile('\.mp3$') #regex object for checking if mp3 file
 		self.hidden_dir = re.compile('^\..+$') #object for detecting hidden directories`
-		self.file_repeat= re.compile('\(\d+\)\.')
+		self.file_repeat= re.compile('\(\d+\)\.') #object for dealing with duplicate filenames
 
 		if self.opt.default_config:
 			if os.path.exists(os.path.expanduser("~/.py_mp3.conf")):
