@@ -23,6 +23,7 @@ class Mp3Lib(object):
 		self.pass_format_back = []
 		self.mp3_check = re.compile('\.mp3$') #regex object for checking if mp3 file
 		self.hidden_dir = re.compile('^\..+$') #object for detecting hidden directories`
+		self.file_repeat= re.compile('\(.+\)\.')
 
 		if self.opt.default_config:
 			if os.path.exists(os.path.expanduser("~/.py_mp3.conf")):
@@ -93,18 +94,21 @@ class Mp3Lib(object):
 			print i,":",file_data[i]
 		print "="*10
 
-	def move_to_delete(self, to_move, try_num=1):
-		print 'start directory', to_move
+	def move_to_delete(self, to_move,try_num=1):
+		old_name = to_move
 		try:
 			shutil.move(to_move, self.delete_dir)
+			print "The file was moved, "
 		except:
-			if try_num ==1:
-				to_move = "("+str(try_num)+")"+to_move
-			else:
-				root_of_file, extension = os.path.splitext(to_move)
+			root_of_file, extension = os.path.splitext(to_move)
+			if try_num == 1:
 				to_move = root_of_file + "("+str(try_num)+")" + extension
-				print to_move
-				move_to_delete(to_move,try_num+1)
+			else:
+				begin, re_extension = re.split(self.file_repeat, to_move)
+				to_move = begin + "("+str(try_num)+")"+re_extension
+			print to_move
+			os.rename(old_name, to_move)
+			self.move_to_delete(to_move,try_num+1)
 		try_num+=1
 	def rip_file(self, filename):
 		ripped_file = file_rip.Ripper(filename)
