@@ -22,6 +22,7 @@ class Puller(object):
 	
 	def main(self, filename):
 		chop_format = self.format[:]
+		error_message_file = filename
 		filename = filename.split(' - ')
 		while '-' in filename[:]:
 			filename.remove("-")
@@ -56,10 +57,11 @@ class Puller(object):
 			if self.more_data_check is False:
 				answer = 'foobar'
 				print "More data is available than specified by your naming format."
+				print filename ,": is not being fully used"
 				while not (answer[0].lower() == 'y' or answer[0].lower() == 'n'):
 					answer = self.get_input()
 					if answer[0].lower() == 'n':
-						raise Exception("User cancelled excecution")
+						print "###", error_message_file, " has been skipped"
 					elif answer[0].lower() == 'y':
 						self.more_data_check = True
 		#print self.name_data #for debugging

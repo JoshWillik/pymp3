@@ -4,9 +4,8 @@ class Clearer(object):
 		self.mp3 = foobar.EasyID3
 		self.main(edit_file)
 	def main(self, edit_file):
-		delete_metadata= self.mp3(edit_file)
-
 		try:
+			delete_metadata= self.mp3(edit_file)
 			delete_metadata.clear()
 			delete_metadata.save()
 			print edit_file, "successfully cleared"

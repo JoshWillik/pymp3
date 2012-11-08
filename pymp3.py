@@ -92,7 +92,7 @@ class Mp3Lib(object):
 		print "For file, ", spec_filename, ":"
 		for i in file_data:
 			print i,":",file_data[i]
-		print "="*10
+		print "="*20
 
 	def move_to_delete(self, to_move,try_num=1):
 		old_name = to_move

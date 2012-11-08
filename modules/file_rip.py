@@ -40,19 +40,13 @@ class Ripper(object):
 			f_song_num = '0'+f_song_num
 
 		song_data = {'title':f_title,'artist':f_artist,'discnumber':f_cd_num,'tracknumber':f_song_num, 'album':f_album, '-':'-'}
-		print song_data #for debugging
+		# print song_data #for debugging
 		self.song_data = song_data
 		#print "\nData pulled from ", self.m_file, "is\n",song_data for debugging only
-	def clear(self):
-		delete_metadata= self.mp3(self.m_file)
-		try:
-			delete_metadata.clear()
-			delete_metadata.save()
-		except ValueError:
-			print "File has already been cleared, or an unknown error has occured"
 
 
 if __name__ == "__main__":
+	#For debugging, not intended for solitary use
 	from sys import argv
 	#import parse_config TODO
 	base_args = argv

@@ -21,9 +21,9 @@ class Paster(object):
 			new_name += " "
 		new_name=new_name.strip()
 		new_name+=".mp3"
-		print new_name
+		#print new_name for debugging
 		new_name = self.re.compile('[^\w\"\' -\.]').sub("",new_name)
-		print new_name
+		#print new_name for debugging
 		self.os.rename(self.target_file, self.os.path.join(self.os.path.dirname(self.os.path.abspath(self.target_file)),new_name))
 
 
