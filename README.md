@@ -1,6 +1,8 @@
+# WARNING: This project is abandoned
+
 NOTE: Requires installed mutagen library (included, see /modules/libs for details)
 
-Summary: 
+Summary:
 non-destructive: moves non-mp3 files to a .delete directory (which is created in the directory the script runs in) to prevent script from deleting half your library on a bug. it seemed safer that way.
 
 Ignores all hidden folders (like .info, .readme.txt, .etcetc, if you want to store data inside the directory without it getting removed).
@@ -9,7 +11,7 @@ Supports taking metadata and putting it into the file name according to a format
 
 If xfile.xtension already exists in trash, rename target file to xfile(1).xtension. If that doesn't work, try xfile.(2).xtension and so on and so forth
 
-Development: 
+Development:
 Next in the possible development cue are:
 installability (extra option, will require investigation and experimentation, please contact for more details)
 
@@ -34,7 +36,7 @@ ex: ./pymp3 -c ~/Music -p <or> ./pymp3 -c ~/Music --print-metadata
 pulls data from file title and pastes metadata
 ex: ./pymp3 -c ~/Music -t or ./pymp3 -c ~/Music --pull-title
 
-Extra notes: 
+Extra notes:
 Running any operation except -d will move incompatable files to .delete
 Invalid files marked .mp3 *should* be passed over with a printed warning.
 All hidden files or folders will be ignored, so place important extra data in them
